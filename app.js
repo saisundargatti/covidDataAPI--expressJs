@@ -127,13 +127,13 @@ app.get("/states/:stateId/stats/", async (request, response) => {
   const { stateId } = request.params;
   const getStateStatsQuery = `
   select 
-  cases as totalCases,
-  cured as totalCured,
-  active as totalActive,
-  deaths as totalDeaths
+  sum(cases) as totalCases,
+  sum(cured) as totalCured,
+  sum(active) as totalActive,
+  sum(deaths) as totalDeaths
   from district where state_id ='${stateId}';`;
   const getDBResponse = await db.all(getStateStatsQuery);
-  response.send(getDBResponse);
+  response.send(getDBResponse[0]);
 });
 
 //API 8
